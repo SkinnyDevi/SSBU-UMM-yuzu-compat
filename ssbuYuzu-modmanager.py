@@ -1,7 +1,6 @@
 import os
 import shutil
 import time
-from simple_term_menu import TerminalMenu
 
 
 def progress_percentage(perc, width=None):
@@ -137,9 +136,15 @@ print("- Choose \"Base\" option and then \"Full\" option \n")
 time.sleep(read_secs)
 print("Leave the program running, it'll take about 10-30 minutes (Depending on your computer). \n")
 time.sleep(read_secs)
-print("When finished, press enter below to continue:")
+print("When finished, the program will continue:")
 
-TerminalMenu(["Dump completed"]).show()
+dataArcFound = True
+while dataArcFound:
+    if os.path.isfile(DATA_ARC_DUMP_PATH+'\data.arc'):
+        dataArcFound = False
+    else:
+        print("Waiting for data.arc file")
+        time.sleep(read_secs)
 print("\nAlright! Let's continue.")
 time.sleep(read_secs)
 
