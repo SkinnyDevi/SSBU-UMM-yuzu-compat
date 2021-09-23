@@ -1,1 +1,1 @@
-# SSBU-UMM-yuzu-compat
+# Super Smash Bros Ultimate + Ultimate Mod Manager Compatibility with Yuzu emulator (Tool)
