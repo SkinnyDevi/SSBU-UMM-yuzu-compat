@@ -105,6 +105,6 @@ def copy_with_progress(src, dst, *, follow_symlinks=True):
     return dst
 
 ################################################################
-# Thanks to Martin Pieters and flutefreak7 in stackoverflow
+# Thanks to Martin Pieters and flutefreak7 from stackoverflow
 # for tracking progress and progress bar when copying with shutil
 ################################################################
