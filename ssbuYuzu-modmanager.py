@@ -114,7 +114,7 @@ def copy_with_progress(src, dst, *, follow_symlinks=True):
 
 os.system("clear")
 
-UMM_MODS_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\mods')
+UMM_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager')
 DATA_ARC_DUMP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\atmosphere\contents\01006A800016E000\romfs')
 DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\arc_backup')
 
@@ -124,7 +124,7 @@ print("Welcome to the Mod Manager Tool for Yuzu SSBU and Ultimate Mod Manager!")
 time.sleep(read_secs)
 
 # Step 1, dump data.arc to directory
-print("Step 1: Dump data.arc to the Yuzu directory\n")
+print("Step 1: Dump data.arc to the Yuzu directory.\n")
 time.sleep(read_secs)
 print("To do this:")
 time.sleep(read_secs)
@@ -134,11 +134,38 @@ print("- Right click the game, and select \"Dump\", and select \"Dump ROMFS to S
 time.sleep(read_secs+1)
 print("- Choose \"Base\" option and then \"Full\" option \n")
 time.sleep(read_secs)
-print("Leave the program running, it'll take about 10-25 minutes. \n")
+print("Leave the program running, it'll take about 10-30 minutes (Depending on your computer). \n")
 time.sleep(read_secs)
 print("When finished, press enter below to continue:")
 
-
-completed = TerminalMenu(["Dump completed"]).show()
-
+TerminalMenu(["Dump completed"]).show()
 print("\nAlright! Let's continue.")
+time.sleep(read_secs)
+
+# Step 2, create folders and backup for data.arc
+print("Step 2: Let's now check and create then necessary folders.\n")
+time.sleep(read_secs)
+print("Let's check for the Ultimate Mod Manager directory...")
+
+# Checks if the directory exists
+if(os.path.dir(UMM_PATH)):
+    print("Ultimate Mod Manager directory exists! Great.")
+else:
+    print("Oh, theres, nothing. Don\'t worry, we'll be creating everything for you.")
+    try:
+        os.mkdir(UMM_PATH)
+    except OSError as err:
+        print("Whoops! For some reason, we couldn't create the necessary folders.")
+        print("Here is the problem:")
+        print(err.message)
+    else:
+        print("Successfully created Ultimate Mod Manager folder, now adding mods folder...")
+
+    try:
+        os.mkdir(UMM_PATH+'\mods')
+    except OSError as err:
+        print("Whoops! For some reason, we couldn't create the necessary folders.")
+        print("Here is the problem:")
+        print(err.message)
+    else:
+        print("Successfully created mods folder!")
