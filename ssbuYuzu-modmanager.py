@@ -1,5 +1,7 @@
 import os
 import shutil
+import time
+from simple_term_menu import TerminalMenu
 
 
 def progress_percentage(perc, width=None):
@@ -108,3 +110,35 @@ def copy_with_progress(src, dst, *, follow_symlinks=True):
 # Thanks to Martin Pieters and flutefreak7 in stackoverflow
 # for tracking progress and progress bar when copying with shutil
 ################################################################
+
+
+os.system("clear")
+
+UMM_MODS_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\mods')
+DATA_ARC_DUMP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\atmosphere\contents\01006A800016E000\romfs')
+DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\arc_backup')
+
+read_secs = 0.5
+
+print("Welcome to the Mod Manager Tool for Yuzu SSBU and Ultimate Mod Manager!")
+time.sleep(read_secs)
+
+# Step 1, dump data.arc to directory
+print("Step 1: Dump data.arc to the Yuzu directory\n")
+time.sleep(read_secs)
+print("To do this:")
+time.sleep(read_secs)
+print("- Open Yuzu Emulator and locate Super Smash Bros Ultimate Mod Manager")
+time.sleep(read_secs)
+print("- Right click the game, and select \"Dump\", and select \"Dump ROMFS to SDMC\"")
+time.sleep(read_secs+1)
+print("- Choose \"Base\" option and then \"Full\" option \n")
+time.sleep(read_secs)
+print("Leave the program running, it'll take about 10-25 minutes. \n")
+time.sleep(read_secs)
+print("When finished, press enter below to continue:")
+
+
+completed = TerminalMenu(["Dump completed"]).show()
+
+print("\nAlright! Let's continue.")
