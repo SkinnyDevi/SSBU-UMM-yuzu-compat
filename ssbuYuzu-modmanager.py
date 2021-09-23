@@ -118,7 +118,7 @@ UMM_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager')
 DATA_ARC_DUMP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\atmosphere\contents\01006A800016E000\romfs')
 DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\arc_backup')
 
-read_secs = 0.5
+read_secs = 1
 
 print("Welcome to the Mod Manager Tool for Yuzu SSBU and Ultimate Mod Manager!")
 time.sleep(read_secs)
@@ -168,4 +168,15 @@ else:
         print("Here is the problem:")
         print(err.message)
     else:
-        print("Successfully created mods folder!")
+        print("Successfully created mods folder! Creating an extra folder for data.arc backup...")
+
+    try:
+        os.mkdir(UMM_PATH+'\data_arc_backup')
+    except OSError as err:
+        print("Whoops! For some reason, we couldn't create the necessary folders.")
+        print("Here is the problem:")
+        print(err.message)
+    else:
+        print("Successfully created data.arc backup folder.")
+        time.sleep(read_secs-1)
+        print("Moving on...")
