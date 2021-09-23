@@ -116,7 +116,7 @@ os.system("clear")
 
 UMM_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager')
 DATA_ARC_DUMP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\atmosphere\contents\01006A800016E000\romfs')
-DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\arc_backup')
+DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\data_arc_backup')
 
 read_secs = 1
 
@@ -148,7 +148,7 @@ time.sleep(read_secs)
 print("Let's check for the Ultimate Mod Manager directory...")
 
 # Checks if the directory exists
-if(os.path.dir(UMM_PATH)):
+if(os.path.isdir(UMM_PATH)):
     print("Ultimate Mod Manager directory exists! Great.")
 else:
     print("Oh, theres, nothing. Don\'t worry, we'll be creating everything for you.")
@@ -171,7 +171,7 @@ else:
         print("Successfully created mods folder! Creating an extra folder for data.arc backup...")
 
     try:
-        os.mkdir(UMM_PATH+'\data_arc_backup')
+        os.mkdir(DATA_ARC_BACKUP_PATH)
     except OSError as err:
         print("Whoops! For some reason, we couldn't create the necessary folders.")
         print("Here is the problem:")
@@ -180,3 +180,11 @@ else:
         print("Successfully created data.arc backup folder.")
         time.sleep(read_secs-1)
         print("Moving on...")
+
+
+# Step 3, backing up data.arc
+print("Step3: Creating backup of data.arc...")
+time.sleep(read_secs-1)
+print("This may take a while...")
+copy_with_progress(DATA_ARC_DUMP_PATH, DATA_ARC_BACKUP_PATH)
+print("Done! Awesome.")
