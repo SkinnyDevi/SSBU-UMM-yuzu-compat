@@ -115,6 +115,7 @@ def copy_with_progress(src, dst, *, follow_symlinks=True):
 os.system("clear")
 
 UMM_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager')
+UMM_MOD_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\mods')
 DATA_ARC_DUMP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\atmosphere\contents\01006A800016E000\romfs')
 DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\data_arc_backup')
 
@@ -162,7 +163,7 @@ else:
         print("Successfully created Ultimate Mod Manager folder, now adding mods folder...")
 
     try:
-        os.mkdir(UMM_PATH+'\mods')
+        os.mkdir(UMM_MOD_PATH)
     except OSError as err:
         print("Whoops! For some reason, we couldn't create the necessary folders.")
         print("Here is the problem:")
