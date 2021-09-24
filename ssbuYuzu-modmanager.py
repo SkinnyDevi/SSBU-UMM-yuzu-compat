@@ -1,6 +1,7 @@
 import os
 import shutil
 import time
+from tqdm import tqdm
 
 
 def progress_percentage(perc, width=None):
@@ -118,7 +119,7 @@ UMM_MOD_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\mods'
 DATA_ARC_DUMP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\atmosphere\contents\01006A800016E000\romfs')
 DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\data_arc_backup')
 
-read_secs = 1
+read_secs = 2
 
 print("Welcome to the Mod Manager Tool for Yuzu SSBU and Ultimate Mod Manager!")
 time.sleep(read_secs)
@@ -154,8 +155,20 @@ time.sleep(read_secs)
 print("Let's check for the Ultimate Mod Manager directory...")
 
 # Checks if the directory exists
-if(os.path.isdir(UMM_PATH)):
+is_umm_path = False
+is_umm_mod_path = False
+is_umm_dataarc_backup_path = False
+
+if (os.path.isdir(UMM_PATH)):
+    is_umm_path = True
+if (os.path.isdir(UMM_MOD_PATH)):
+    is_umm_mod_path = True
+if (os.path.isdir(DATA_ARC_BACKUP_PATH)):
+    is_umm_dataarc_backup_path = True
+
+if (is_umm_path):
     print("Ultimate Mod Manager directory exists! Great.")
+    time.sleep(read_secs-1)
 else:
     print("Oh, theres, nothing. Don\'t worry, we'll be creating everything for you.")
     try:
@@ -166,7 +179,12 @@ else:
         print(err.message)
     else:
         print("Successfully created Ultimate Mod Manager folder, now adding mods folder...")
+        time.sleep(read_secs-2)
 
+if (is_umm_mod_path):
+    print("Awesome! You seem to have the mods directory correctly setup.")
+    time.sleep(read_secs-1)
+else:
     try:
         os.mkdir(UMM_MOD_PATH)
     except OSError as err:
@@ -175,7 +193,13 @@ else:
         print(err.message)
     else:
         print("Successfully created mods folder! Creating an extra folder for data.arc backup...")
+        time.sleep(read_secs-2)
 
+if (is_umm_dataarc_backup_path):
+    print("Seems you have a data.arc backup folder in UMM, interesting...\n We'll need that!")
+    time.sleep(read_secs-1)
+    print("Moving on...")
+else:
     try:
         os.mkdir(DATA_ARC_BACKUP_PATH)
     except OSError as err:
@@ -185,12 +209,21 @@ else:
     else:
         print("Successfully created data.arc backup folder.")
         time.sleep(read_secs-1)
-        print("Moving on...")
+        print("Moving on...\n")
 
 
 # Step 3, backing up data.arc
 print("Step3: Creating backup of data.arc...")
 time.sleep(read_secs-1)
 print("This may take a while...")
-copy_with_progress(DATA_ARC_DUMP_PATH, DATA_ARC_BACKUP_PATH)
+with open(DATA_ARC_DUMP_PATH+'\data.arc', 'rb') as dataArc:
+    with open(DATA_ARC_BACKUP_PATH+'\data.arc', 'wb') as newDataArc:
+        fileSize = os.path.getsize(DATA_ARC_DUMP_PATH+'\data.arc')
+        pbar = tqdm(total=fileSize, unit='B', unit_scale=True)
+        for i in dataArc:
+            newDataArc.write(i)
+            pbar.update(len(i))
+        pbar.close()
+        newDataArc.close()
+        dataArc.close()
 print("Done! Awesome.")
