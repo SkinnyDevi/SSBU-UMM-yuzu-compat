@@ -1,5 +1,6 @@
 import os
 import time
+import json
 from tqdm import tqdm
 
 os.system("clear")
@@ -117,3 +118,19 @@ with open(DATA_ARC_DUMP_PATH+'\data.arc', 'rb') as dataArc:
         newDataArc.close()
         dataArc.close()
 print("Done! Awesome.")
+
+# Step 4, generate a config.json
+print("We're nearly there, just generating a config file...")
+with open(DATA_ARC_BACKUP_PATH+'\config.json', 'w') as config:
+    defaultConfig = {}
+    defaultConfig["has_run_setup"] = True
+    defaultConfig["has_custom_mod_folder"] = False
+    print("Generating and writing config.json...")
+    try:
+        config.write(json.dumps(defaultConfig))
+    except OSError as e:
+        print("Woah! We couldn't make a config file.")
+        print("Here is what's stopping us from continuing...")
+        print(e.message)
+    else:
+        print("Okay! We're good to go. Let's continue.")
