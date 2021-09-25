@@ -21,7 +21,7 @@ print("Step 1: Dump data.arc to the Yuzu directory.\n")
 time.sleep(read_secs)
 print("To do this:")
 time.sleep(read_secs)
-print("- Open Yuzu Emulator and locate Super Smash Bros Ultimate Mod Manager")
+print("- Open Yuzu Emulator and locate Super Smash Bros Ultimate")
 time.sleep(read_secs)
 print("- Right click the game, and select \"Dump\", and select \"Dump ROMFS to SDMC\"")
 time.sleep(read_secs+1)
@@ -137,3 +137,19 @@ with open(DATA_ARC_BACKUP_PATH+'\config.json', 'w') as config:
         print(e.message)
     else:
         print("Okay! We're good to go. Let's continue.")
+
+# Step 5, tool's main menu
+# Options: Add mods, install & uninstall mods and remove completely
+# Finally, setup a custom mod folder #
+
+def menu():
+    pass
+
+def install():
+    pass
+
+def uninstall():
+    pass
+
+def remove():
+    pass
