@@ -1,16 +1,17 @@
+from genericpath import getsize
 import os
 import time
 import json
 from tqdm import tqdm
 
-os.system("clear")
+os.system("cls")
 
 UMM_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager')
 UMM_MOD_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\mods')
 DATA_ARC_DUMP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\atmosphere\contents\01006A800016E000\romfs')
 DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\data_arc_backup')
 
-read_secs = 2
+read_secs = 3
 
 print("Welcome to the Mod Manager Tool for Yuzu SSBU and Ultimate Mod Manager!")
 time.sleep(read_secs)
@@ -28,17 +29,19 @@ print("- Choose \"Base\" option and then \"Full\" option \n")
 time.sleep(read_secs)
 print("Leave the program running, it'll take about 10-30 minutes (Depending on your computer). \n")
 time.sleep(read_secs)
-print("When finished, the program will continue:")
+print("When Yuzu tells you that it has finished dumping, continue:")
 
+#17252303608 bytes -> data.arc file size tested locally
 dataArcFound = True
 while dataArcFound:
-    if os.path.isfile(DATA_ARC_DUMP_PATH+'\data.arc'):
+    a = input("Press {Enter} to continue when the dump has finished...")
+    if os.path.isfile(DATA_ARC_DUMP_PATH+'\data.arc') and (os.path.getsize(DATA_ARC_DUMP_PATH+'\data.arc') >= 17252303608):
         dataArcFound = False
     else:
-        print("Waiting for data.arc file")
-        time.sleep(read_secs)
+        print("Whoops! It seems the file is not correct or the file has not finished importing, try again.")
 print("\nAlright! Let's continue.")
 time.sleep(read_secs)
+
 
 # Step 2, create folders and backup for data.arc
 print("Step 2: Let's now check and create then necessary folders.\n")
