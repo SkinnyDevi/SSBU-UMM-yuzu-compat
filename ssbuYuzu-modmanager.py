@@ -31,7 +31,7 @@ print("Leave the program running, it'll take about 10-30 minutes (Depending on y
 time.sleep(read_secs)
 print("When Yuzu tells you that it has finished dumping, continue:")
 
-#17252303608 bytes -> data.arc file size tested locally
+# 17252303608 bytes -> data.arc file size tested locally
 dataArcFound = True
 while dataArcFound:
     a = input("Press {Enter} to continue when the dump has finished...")
@@ -142,14 +142,18 @@ with open(DATA_ARC_BACKUP_PATH+'\config.json', 'w') as config:
 # Options: Add mods, install & uninstall mods and remove completely
 # Finally, setup a custom mod folder #
 
+
 def menu():
     pass
+
 
 def install():
     pass
 
+
 def uninstall():
     pass
+
 
 def remove():
     pass
