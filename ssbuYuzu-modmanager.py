@@ -1,8 +1,8 @@
-from genericpath import getsize
 import os
 import time
 import json
 from tqdm import tqdm
+from PyInquirer import prompt
 
 os.system("cls")
 
@@ -142,7 +142,22 @@ with open(DATA_ARC_BACKUP_PATH+'\config.json', 'w') as config:
 # Options: Add mods, install & uninstall mods and remove completely
 # Finally, setup a custom mod folder #
 
+from PyInquirer import prompt
 def menu():
+    notQuit = True
+    print("Hey There! Welcome to the main menu.")
+    menuOptions = [
+        {
+            'type': 'list',
+            'name': 'tool_main_menu',
+            'message': 'Choose between the options using the arrows, and press enter to choose the option:',
+            'choices': ["Install Mods", "Uninstall Mods", "Setup Custom Mod Folder (Unavailable ATM)"]
+        }
+    ]
+    while notQuit:
+        answers = prompt(menuOptions)
+        print(answers)
+        notQuit = False
     pass
 
 def install():
@@ -153,3 +168,5 @@ def uninstall():
 
 def remove():
     pass
+
+menu()
