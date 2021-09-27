@@ -142,7 +142,6 @@ with open(DATA_ARC_BACKUP_PATH+'\config.json', 'w') as config:
 # Options: Add mods, install & uninstall mods and remove completely
 # Finally, setup a custom mod folder #
 
-from PyInquirer import prompt
 def menu():
     notQuit = True
     print("Hey There! Welcome to the main menu.")
@@ -160,13 +159,21 @@ def menu():
         notQuit = False
     pass
 
+
+def restoreDataArc_Backup():
+    pass
+
+
 def install():
     pass
+
 
 def uninstall():
     pass
 
+
 def remove():
     pass
+
 
 menu()
