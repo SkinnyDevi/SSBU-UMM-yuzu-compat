@@ -1,4 +1,5 @@
 import os
+from os import walk
 import time
 import json
 from tqdm import tqdm
@@ -31,7 +32,7 @@ print("Leave the program running, it'll take about 10-30 minutes (Depending on y
 time.sleep(read_secs)
 print("When Yuzu tells you that it has finished dumping, continue:")
 
-#17252303608 bytes -> data.arc file size tested locally
+# 17252303608 bytes -> data.arc file size tested locally
 dataArcFound = True
 while dataArcFound:
     a = input("Press {Enter} to continue when the dump has finished...")
@@ -142,6 +143,14 @@ with open(DATA_ARC_BACKUP_PATH+'\config.json', 'w') as config:
 # Options: Add mods, install & uninstall mods and remove completely
 # Finally, setup a custom mod folder #
 
+defaultChoice = [{
+    'type': 'list',
+    'name': 'yes_no_choice',
+    'message': '',
+    'choices': ['Yes', 'No']
+}]
+
+
 def menu():
     notQuit = True
     print("Hey There! Welcome to the main menu.")
@@ -156,6 +165,8 @@ def menu():
     while notQuit:
         answers = prompt(menuOptions)
         print(answers)
+        if (answers["tool_main_menu"] == menuOptions[0]["choices"][1]):
+            uninstall()
         notQuit = False
     pass
 
@@ -169,7 +180,26 @@ def install():
 
 
 def uninstall():
-    pass
+    folderPath = "/Users/felixmv/Desktop/a"
+    dirnames = next(walk(folderPath), (None, [], None))[1]
+    modUninstall = [{
+        'type': 'list',
+        'name': 'mod_uninstall',
+        'message': 'Choose a mod to uninstall:',
+        'choices': []
+    }]
+    for mod in dirnames:
+        modUninstall[0]['choices'].append(mod)
+    toUninstall = prompt(modUninstall)
+    defaultChoice[0]['message'] = f"You chose to uninstall {toUninstall['mod_uninstall']} mod, continue?"
+    confirmUninstall = prompt(defaultChoice)
+    print(f"You chose {confirmUninstall['yes_no_choice']}")
+    if confirmUninstall['yes_no_choice'] == 'Yes':
+        if (os.path.exists(folderPath+"/"+toUninstall['mod_uninstall'])):
+            os.rmdir(folderPath+"/"+toUninstall['mod_uninstall'])
+        else:
+            print("Folder no longer exists")
+        pass
 
 
 def remove():
