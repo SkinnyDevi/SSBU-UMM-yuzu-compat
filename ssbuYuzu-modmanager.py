@@ -1,4 +1,3 @@
-from genericpath import isfile
 import os
 from os import walk
 import time
@@ -14,10 +13,11 @@ DATA_ARC_DUMP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\atmosphere\content
 DATA_ARC_BACKUP_PATH = os.path.expandvars(r'%APPDATA%\yuzu\sdmc\UltimateModManager\data_arc_backup')
 CONFIG_PATH = DATA_ARC_BACKUP_PATH+'\config.json'
 
-read_secs = 1
+read_secs = 2
 
 print("Welcome to the Mod Manager Tool for Yuzu SSBU and Ultimate Mod Manager!")
 time.sleep(read_secs)
+
 
 def runSetup():
 
@@ -112,7 +112,7 @@ def runSetup():
 
 
     # Step 3, backing up data.arc
-    if (os.path.isfile(DATA_ARC_DUMP_PATH+'\data.arc')):
+    if (os.path.isfile(DATA_ARC_BACKUP_PATH+'\data.arc')):
         print("Skipping Step 3: You already have a backup of the data.arc file in the correct folder!")
     else:
         print("Step3: Creating backup of data.arc...")
@@ -146,8 +146,9 @@ def runSetup():
             print(e.message)
         else:
             print("Okay! We're good to go. Let's continue.")
+            time.sleep(read_secs)
 
-# MAIN MENU #
+
 # Options: Add mods, install & uninstall mods and remove completely
 # Finally, setup a custom mod folder #
 
@@ -160,6 +161,7 @@ defaultChoice = [{
 
 
 def menu():
+    os.system('cls')
     notQuit = True
     print("Hey There! Welcome to the main menu.")
     menuOptions = [
@@ -170,12 +172,14 @@ def menu():
             'choices': ["Install Mods", "Uninstall Mods", "Setup Custom Mod Folder (Unavailable ATM)"]
         }
     ]
-    while notQuit:
-        answers = prompt(menuOptions)
-        print(answers)
-        if (answers["tool_main_menu"] == menuOptions[0]["choices"][1]):
-            uninstall()
-        notQuit = False
+    answer = prompt(menuOptions)["tool_main_menu"]
+    print(answer)
+    if (answer == menuOptions[0]['choices'][0]):
+        install()
+    elif (answer == menuOptions[0]["choices"][1]):
+        uninstall()
+    elif (answer == menuOptions[0]["choices"][2]):
+       setupCustomModFolder()
 
 
 def restoreDataArc_Backup():
@@ -186,7 +190,12 @@ def install():
     print("OPTION UNDER DEVELOPMENT")
 
 
+def setupCustomModFolder():
+    print("OPTION UNDER DEVELOPMENT")
+
+
 def uninstall():
+    os.system('cls')
     folderPath = UMM_MOD_PATH
     dirnames = next(walk(folderPath), (None, [], None))[1]
     modUninstall = [{
@@ -195,32 +204,38 @@ def uninstall():
         'message': 'Choose a mod to uninstall:',
         'choices': []
     }]
+    modUninstall[0]['choices'].append("-#- CANCEL -#-")
     for mod in dirnames:
         modUninstall[0]['choices'].append(mod)
     toUninstall = prompt(modUninstall)
-    defaultChoice[0]['message'] = f"You chose to uninstall {toUninstall['mod_uninstall']} mod, continue?"
-    confirmUninstall = prompt(defaultChoice)
-    print(f"You chose {confirmUninstall['yes_no_choice']}")
-    if confirmUninstall['yes_no_choice'] == 'Yes':
-        if (os.path.exists(folderPath+"/"+toUninstall['mod_uninstall'])):
-            os.rmdir(folderPath+"/"+toUninstall['mod_uninstall'])
+    if toUninstall['mod_uninstall'] == "-#- CANCEL -#-":
+        os.system('cls')
+        menu()
+    else:
+        defaultChoice[0]['message'] = f"You chose to uninstall {toUninstall['mod_uninstall']} mod, continue?"
+        confirmUninstall = prompt(defaultChoice)['yes_no_choice']
+        print(f"You chose {confirmUninstall}")
+        if confirmUninstall == 'Yes':
+            if (os.path.exists(folderPath+"/"+toUninstall['mod_uninstall'])):
+                os.rmdir(folderPath+"/"+toUninstall['mod_uninstall'])
+                menu()
+            else:
+                print("Folder no longer exists")
         else:
-            print("Folder no longer exists")
+            menu()
 
 
-def remove():
-    print("OPTION UNDER DEVELOPMENT")
-
-print(os.path.isdir(DATA_ARC_BACKUP_PATH))
-
+# SCRIPT PROCESS STARTS HERE
 if (os.path.isdir(DATA_ARC_BACKUP_PATH)):
     config = None
     with open(CONFIG_PATH, 'r') as configFile:
-        print(configFile.readlines())
-    print(config)
-    if (config['has_run_setup'] == True):
+        config = json.loads("".join(configFile.readlines()))
+        print("HAS RUN SETUP - " + str(config['has_run_setup']))
+    if (config['has_run_setup']):
         menu()
     else:
         runSetup()
+        menu()
 else:
     runSetup()
+    menu()
